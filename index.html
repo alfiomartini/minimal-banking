@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="header">
+      <div class="header__wellcome">Log in to get started</div>
+      <div class="header__logo">
+        <img src="./logo.png" alt="bank logo" />
+      </div>
+      <form class="form header__form">
+        <input type="text" placeholder="username" />
+        <input type="text" placeholder="pin" />
+        <button>Log in</button>
+      </form>
+    </section>
+    <section class="main">
+      <div class="balance">
+        <div class="balance__current">
+          <span class="header"> Current Balance</span>
+          <span class="date"> As of 06/01/2022, 9:13</span>
+        </div>
+        <div class="balance__value">$ 26000,00</div>
+      </div>
+      <div class="transactions">
+        <div class="movements">
+          <div class="movements__row">
+            <span class="movements__type movements--deposit">deposit</span>
+            <span class="movements__date">12/03/2020</span>
+            <span class="movements__value"> 1300.00</span>
+          </div>
+          <div class="movements__row">
+            <span class="movements__type movements--withdrawal"
+              >withdrawal</span
+            >
+            <span class="movements__date">23/12/2019</span>
+            <span class="movements__value"> -200.00</span>
+          </div>
+        </div>
+        <div class="operations">
+          <div class="operations__op op--transfer">
+            <h3>Transfer Money</h3>
+            <form class="operations__form form--transfer">
+              <input type="text" />
+              <input type="number" />
+              <button>Go</button>
+            </form>
+          </div>
+          <div class="operations__op op--loan">
+            <h3>Request Loan</h3>
+            <form class="operations__form form--loan">
+              <input type="number" />
+              <button>Go</button>
+            </form>
+          </div>
+          <div class="operations__op op--close">
+            <h3>Close Account</h3>
+            <form class="operations__form form--close">
+              <input type="text" />
+              <input type="text" />
+              <button>Go</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="summary"></div>
+    </section>
+  </body>
+</html>

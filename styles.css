@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 30px 50px;
+}
+
+/* header styles */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header__wellcome {
+  font-size: 20px;
+}
+
+.header__logo img {
+  width: 70px;
+}
+
+.header__form {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+.header__form input {
+  margin-right: 10px;
+  text-align: center;
+}
+
+.header__form button {
+  width: 60px;
+}
+
+/* main styles */
+
+.main {
+  width: 90%;
+  margin: 20px auto;
+}
+
+/* balance */
+
+.balance {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.balance__current {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance__current .header {
+  font-size: 24px;
+}
+
+.balance__current .date {
+  font-size: 18px;
+}
+
+.balance__current .value {
+  font-size: 30px;
+}
+
+/* transactions */
+
+.transactions {
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  height: 600px;
+}
+
+.movements {
+  width: 50%;
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+.movements__row {
+  margin: 25px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.movements--deposit {
+  background-color: green;
+  color: whitesmoke;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.movements--withdrawal {
+  background-color: red;
+  color: whitesmoke;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+/* operations */
+.operations {
+  width: 45%;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.operations__op {
+  padding: 20px;
+  height: 30%;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.operations__form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.operations__form input {
+  padding: 5px 5px;
+  margin-right: 10px;
+}
+
+.operations__op button {
+  width: 60px;
+  padding: 5px 10px;
+}
