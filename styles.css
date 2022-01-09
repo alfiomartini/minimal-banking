@@ -85,18 +85,18 @@ body {
   border: 1px solid black;
   padding: 20px;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: 30px;
+  column-gap: 10px;
+  row-gap: 10px;
   overflow-y: scroll;
   overflow-x: scroll;
 }
 
-.movements__row {
-  margin: 25px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.movements__date,
+.movements__value {
+  text-align: right;
 }
 
 .movements--deposit {
