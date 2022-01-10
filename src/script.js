@@ -1,6 +1,5 @@
 "use strict";
 
-import { logIn } from "./utils.js";
 // Minimal Bank APP
 
 // Data

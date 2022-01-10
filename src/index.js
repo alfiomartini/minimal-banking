@@ -1,7 +1,6 @@
 "use strict";
 
 import { updateMovements, logIn } from "./utils.js";
-import { accounts } from "./script.js";
 
 // Dom Elements
 

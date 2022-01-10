@@ -12,6 +12,7 @@ export function updateMovements(account) {
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${date}</span>
     <span class="movements__value">${value}</span>
+    <span class="line"></span>
     `;
     strMov += movement;
   });
