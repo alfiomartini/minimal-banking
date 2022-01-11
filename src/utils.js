@@ -19,6 +19,26 @@ export function updateMovements(account) {
   return strMov;
 }
 
+export function updateBalanceDate() {
+  const date = new Date();
+  const localDate = date.toLocaleDateString();
+  const hours = `${date.getHours()}:${date.getMinutes()}`;
+  return `As of ${localDate}, ${hours}`;
+}
+
+export function updateHello(account) {
+  const hours = new Date().getHours();
+  const name = account.owner.split(" ")[0];
+  let timeOfDay = "morning";
+  if (hours > 12) {
+    if (hours < 18) timeOfDay = "afternoon";
+    else if (hours > 18 && hours < 20) timeOfDay = "evening";
+    else timeOfDay = "night";
+  }
+  let hello = `Good ${timeOfDay}, ${name}`;
+  return hello;
+}
+
 export function logIn(inputName, inputPin) {
   inputPin = parseInt(inputPin);
   const account = accounts.find((account) => {
@@ -38,7 +58,6 @@ export function logIn(inputName, inputPin) {
     console.log("authentication successful");
     return {
       username,
-      pin,
       account,
     };
   } else {
