@@ -6,6 +6,7 @@
 
 body {
   padding: 30px 50px;
+  height: 100vh;
 }
 
 /* header styles */
@@ -46,12 +47,17 @@ body {
   margin: 20px auto;
 }
 
+.hidden {
+  display: none;
+}
+
 /* balance */
 
 .balance {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
 .balance__current {
@@ -67,8 +73,8 @@ body {
   font-size: 18px;
 }
 
-.balance__current .value {
-  font-size: 30px;
+.balance__value {
+  font-size: 22px;
 }
 
 /* transactions */
@@ -77,26 +83,30 @@ body {
   margin: 20px auto;
   display: flex;
   justify-content: space-between;
-  height: 450px;
+  height: 60vh;
+}
+
+.transactions .left-container {
+  width: 50%;
 }
 
 .movements {
-  width: 50%;
+  height: 60vh;
   border: 1px solid black;
-  padding: 20px;
+  padding: 20px 15px;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-rows: 30px;
   column-gap: 10px;
   row-gap: 10px;
+  overflow-x: auto;
   overflow-y: scroll;
-  overflow-x: scroll;
   align-items: center;
 }
 
 .movements__type {
-  text-align: left;
+  text-align: center;
   color: whitesmoke;
   padding: 5px 5px;
   border-radius: 10px;
@@ -175,4 +185,28 @@ body {
   padding: 5px 10px;
 }
 
-/*  */
+/* summary  */
+
+.summary {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary div {
+  font-size: 20px;
+}
+
+.summary .label {
+  font-variant: small-caps;
+  font-size: 20px;
+  margin-right: 10px;
+  color: brown;
+}
+
+.summary button {
+  width: 60px;
+  padding: 5px 10px;
+}

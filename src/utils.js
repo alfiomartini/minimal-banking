@@ -1,5 +1,19 @@
+"use strict";
+
 //  functions
 import { accounts } from "./script.js";
+
+export function transferVal(fromAccount, toPinNumber, transferAmount) {
+  console.log(fromAccount, toPinNumber, transferAmount);
+  const toAccount = accounts.find(
+    (account) => account.pin.toString() === toPinNumber
+  );
+  console.log(toAccount);
+  if (!toAccount) return false; // have to signal error to user
+  fromAccount.movements.push(-transferAmount); // ensure negative movement;
+  toAccount.movements.push(transferAmount);
+  return true;
+}
 
 export function updateMovements(account) {
   const { movements } = account;
@@ -7,16 +21,51 @@ export function updateMovements(account) {
   movements.forEach((mov) => {
     const date = new Date().toLocaleDateString();
     const type = mov < 0 ? "withdrawal" : "deposit";
-    const value = mov.toString() + ".00";
+    const value = roundTo(mov, 2);
     const movement = `
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${date}</span>
     <span class="movements__value">${value}</span>
     <span class="line"></span>
     `;
-    strMov += movement;
+    strMov = movement + strMov;
   });
   return strMov;
+}
+
+export function roundTo(val, places) {
+  // let mult = 10 ** places;
+  // let num = Math.ceil(val * mult) / mult;
+  let numText = String(val);
+  let index = numText.indexOf(".");
+  if (index === -1) numText += "." + "0".repeat(places);
+  else {
+    let fraction = numText.slice(index + 1);
+    if (fraction.length < places)
+      numText += "0".repeat(places - fraction.length);
+  }
+  return numText;
+}
+
+export function updateSummary(inMov, outMov, balance) {
+  return `
+  <div><span class="label">in</span>${roundTo(inMov, 2)}</div>
+  <div><span class="label">out</span>${roundTo(outMov, 2)}</div>
+  <div><span class="label">balance</span>${roundTo(balance, 2)}</div>
+  <button class="sort">sort</button>
+  `;
+}
+export function getSummaryAccount(account) {
+  let inMov = 0;
+  let outMov = 0;
+  let balance = 0;
+  const { movements } = account;
+  movements.forEach((mov) => {
+    if (mov > 0) inMov += mov;
+    else outMov += mov;
+    balance += mov;
+  });
+  return { inMov, outMov, balance };
 }
 
 export function updateBalanceDate() {

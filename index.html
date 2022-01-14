@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./static/logo.png" />
     <link rel="stylesheet" href="./static/styles.css" />
     <script src="./src/index.js" type="module" defer></script>
     <title>Minimal Bank App</title>
@@ -16,11 +17,11 @@
       </div>
       <form class="form header__form">
         <input type="text" placeholder="username" class="header__username" />
-        <input type="text" placeholder="pin" class="header__pin" />
+        <input type="number" placeholder="pin" class="header__pin" />
         <button class="header__btn">Log in</button>
       </form>
     </section>
-    <section class="main">
+    <section class="main hidden">
       <div class="balance">
         <div class="balance__current">
           <span class="header"> Current Balance</span>
@@ -29,14 +30,23 @@
         <div class="balance__value">$ 26000,00</div>
       </div>
       <div class="transactions">
-        <div class="movements"></div>
+        <div class="left-container">
+          <div class="movements"></div>
+          <div class="summary"></div>
+        </div>
         <div class="operations">
           <div class="operations__op op--transfer">
             <h3>Transfer Money</h3>
             <form class="operations__form form--transfer">
-              <input type="text" id="transfer-to" />
-              <input type="number" id="transfer-amount" />
-              <button>Go</button>
+              <input type="text" id="transfer-to" class="transfer__to" />
+              <input
+                type="number"
+                id="transfer-amount"
+                class="transfer__amount"
+                min="0"
+                step="0.01"
+              />
+              <button class="transfer__button">Go</button>
               <label for="transfer-to"> Transfer to</label>
               <label for="transfer-amount">Amount</label>
             </form>
@@ -45,7 +55,7 @@
             <h3>Request Loan</h3>
             <form class="operations__form form--loan">
               <input type="number" id="loan-amount" />
-              <button>Go</button>
+              <button class="loan__button">Go</button>
               <label for="loan-amount">Amount</label>
             </form>
           </div>
@@ -61,7 +71,6 @@
           </div>
         </div>
       </div>
-      <div class="summary"></div>
     </section>
   </body>
 </html>
