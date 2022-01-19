@@ -8,7 +8,6 @@ export function transferVal(fromAccount, toPinNumber, transferAmount) {
   const toAccount = accounts.find(
     (account) => account.pin.toString() === toPinNumber
   );
-  console.log(toAccount);
   if (!toAccount) return false; // have to signal error to user
   fromAccount.movements.push(-transferAmount); // ensure negative movement;
   toAccount.movements.push(transferAmount);
@@ -21,11 +20,12 @@ export function updateMovements(account) {
   movements.forEach((mov) => {
     const date = new Date().toLocaleDateString();
     const type = mov < 0 ? "withdrawal" : "deposit";
+    if (mov < 0) mov = Math.abs(mov);
     const value = roundTo(mov, 2);
     const movement = `
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${date}</span>
-    <span class="movements__value">${value}</span>
+    <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
     strMov = movement + strMov;
@@ -47,25 +47,31 @@ export function roundTo(val, places) {
   return numText;
 }
 
-export function updateSummary(inMov, outMov, balance) {
+export function updateSummary(inMov, outMov, interest) {
   return `
   <div><span class="label">in</span>${roundTo(inMov, 2)}</div>
   <div><span class="label">out</span>${roundTo(outMov, 2)}</div>
-  <div><span class="label">balance</span>${roundTo(balance, 2)}</div>
+  <div><span class="label">interest</span>${roundTo(interest, 2)}</div>
   <button class="sort">sort</button>
   `;
 }
 export function getSummaryAccount(account) {
   let inMov = 0;
   let outMov = 0;
+  let interest = 0;
   let balance = 0;
-  const { movements } = account;
+  const { movements, interestRate } = account;
   movements.forEach((mov) => {
     if (mov > 0) inMov += mov;
     else outMov += mov;
     balance += mov;
   });
-  return { inMov, outMov, balance };
+  outMov = Math.abs(outMov);
+  interest = movements
+    .filter((mov) => mov > 0)
+    .map((deposit) => (deposit * interestRate) / 100)
+    .reduce((acc, tax) => acc + tax, 0);
+  return { inMov, outMov, interest, balance };
 }
 
 export function updateBalanceDate() {
@@ -103,6 +109,8 @@ export function logIn(inputName, inputPin) {
     .map((name) => name[0])
     .join("")
     .toLowerCase();
+  // the first conjunct has been satisfied above
+  // so it is trivially true
   if (inputPin === pin && username === inputName) {
     console.log("authentication successful");
     return {

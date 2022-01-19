@@ -31,9 +31,9 @@ function updateUI(account) {
   movementsElm.innerHTML = updateMovements(account);
   wellcomeElm.textContent = updateHello(account);
   balanceDateElm.textContent = updateBalanceDate();
-  const { inMov, outMov, balance } = getSummaryAccount(account);
+  const { inMov, outMov, interest, balance } = getSummaryAccount(account);
   balanceVal.textContent = roundTo(balance, 2);
-  summary.innerHTML = updateSummary(inMov, outMov, balance);
+  summary.innerHTML = updateSummary(inMov, outMov, interest);
   inputName.value = "";
   inputPin.value = "";
   transferToElm.value = "";
