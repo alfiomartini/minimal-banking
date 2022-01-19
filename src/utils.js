@@ -3,11 +3,19 @@
 //  functions
 import { accounts } from "./script.js";
 
+export function computeUsername(account) {
+  let { owner } = account;
+  const username = owner
+    .split(" ")
+    .map((name) => name[0])
+    .join("")
+    .toLowerCase();
+  return username;
+}
+
 export function transferVal(fromAccount, toPinNumber, transferAmount) {
-  console.log(fromAccount, toPinNumber, transferAmount);
-  const toAccount = accounts.find(
-    (account) => account.pin.toString() === toPinNumber
-  );
+  // console.log(fromAccount, toPinNumber, transferAmount);
+  const toAccount = accounts.find((account) => account.pin === toPinNumber);
   if (!toAccount) return false; // have to signal error to user
   fromAccount.movements.push(-transferAmount); // ensure negative movement;
   toAccount.movements.push(transferAmount);
@@ -28,6 +36,7 @@ export function updateMovements(account) {
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
+    // most recent first
     strMov = movement + strMov;
   });
   return strMov;
@@ -59,19 +68,22 @@ export function getSummaryAccount(account) {
   let inMov = 0;
   let outMov = 0;
   let interest = 0;
-  let balance = 0;
   const { movements, interestRate } = account;
   movements.forEach((mov) => {
     if (mov > 0) inMov += mov;
     else outMov += mov;
-    balance += mov;
   });
   outMov = Math.abs(outMov);
   interest = movements
     .filter((mov) => mov > 0)
     .map((deposit) => (deposit * interestRate) / 100)
     .reduce((acc, tax) => acc + tax, 0);
-  return { inMov, outMov, interest, balance };
+  return { inMov, outMov, interest };
+}
+
+export function getBalance(account) {
+  const { movements } = account;
+  return movements.reduce((acc, mov) => acc + mov, 0);
 }
 
 export function updateBalanceDate() {
@@ -103,12 +115,8 @@ export function logIn(inputName, inputPin) {
     console.log("user not found", account);
     return null;
   }
-  let { owner, pin } = account;
-  const username = owner
-    .split(" ")
-    .map((name) => name[0])
-    .join("")
-    .toLowerCase();
+  let { pin } = account;
+  const username = computeUsername(account);
   // the first conjunct has been satisfied above
   // so it is trivially true
   if (inputPin === pin && username === inputName) {
@@ -116,6 +124,7 @@ export function logIn(inputName, inputPin) {
     return {
       username,
       account,
+      balance: getBalance(account),
     };
   } else {
     console.log("error in authentication");

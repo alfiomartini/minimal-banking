@@ -1,6 +1,13 @@
 "use strict";
 
-import { updateMovements, logIn, updateHello, transferVal } from "./utils.js";
+import {
+  updateMovements,
+  logIn,
+  updateHello,
+  transferVal,
+  computeUsername,
+  getBalance,
+} from "./utils.js";
 import {
   updateBalanceDate,
   updateSummary,
@@ -26,13 +33,14 @@ const transferToElm = document.querySelector(".transfer__to");
 const transferAmountElm = document.querySelector(".transfer__amount");
 const transferBtn = document.querySelector(".transfer__button");
 
-function updateUI(account) {
+function updateUI(currentUser) {
+  const { balance, account } = currentUser;
   mainElm.classList.remove("hidden");
   movementsElm.innerHTML = updateMovements(account);
   wellcomeElm.textContent = updateHello(account);
   balanceDateElm.textContent = updateBalanceDate();
-  const { inMov, outMov, interest, balance } = getSummaryAccount(account);
-  balanceVal.textContent = roundTo(balance, 2);
+  const { inMov, outMov, interest } = getSummaryAccount(account);
+  balanceVal.textContent = roundTo(balance, 2) + "US$";
   summary.innerHTML = updateSummary(inMov, outMov, interest);
   inputName.value = "";
   inputPin.value = "";
@@ -45,16 +53,21 @@ logBtn.addEventListener("click", (event) => {
   const userName = inputName.value;
   const userPin = inputPin.value;
   loggedUser = logIn(userName, userPin);
-  if (loggedUser) updateUI(loggedUser.account);
+  if (loggedUser) updateUI(loggedUser);
 });
 
 transferBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const fromAccount = loggedUser.account;
-  const toPinNumber = transferToElm.value; // check with a regex (pinNumber)
-  const transferAmount = transferAmountElm.value; // check with regex
+  const toPinNumber = Number(transferToElm.value); // check with a regex (pinNumber)
+  const transferAmount = Number(transferAmountElm.value); // check with regex
+  if (loggedUser.balance < transferAmount) {
+    console.log("Insufficient amount in account");
+    return;
+  }
   if (transferVal(fromAccount, toPinNumber, transferAmount)) {
-    updateUI(fromAccount);
+    loggedUser.balance = getBalance(loggedUser.account);
+    updateUI(loggedUser);
     console.log("Transfer concluded");
   } else console.log("Invalid transfer (invalid account?)");
 });
