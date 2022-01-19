@@ -1,5 +1,10 @@
 "use strict";
 
+//  note that accounts is read-only, since it can be shared by
+//  many importing modules
+// https://stackoverflow.com/questions/53617972/exported-variables-are-read-only
+
+import { accounts } from "./script.js";
 import {
   updateMovements,
   logIn,
@@ -32,8 +37,16 @@ const balanceVal = document.querySelector(".balance__value");
 const transferToElm = document.querySelector(".transfer__to");
 const transferAmountElm = document.querySelector(".transfer__amount");
 const transferBtn = document.querySelector(".transfer__button");
+const closeBtn = document.querySelector(".close__button");
+const closeUserInput = document.querySelector(".close--user");
+const closeAccountInput = document.querySelector(".close--account");
 
 function updateUI(currentUser) {
+  if (!currentUser) {
+    wellcomeElm.textContent = "Log in to get started";
+    mainElm.classList.add("hidden");
+    return;
+  }
   const { balance, account } = currentUser;
   mainElm.classList.remove("hidden");
   movementsElm.innerHTML = updateMovements(account);
@@ -46,6 +59,8 @@ function updateUI(currentUser) {
   inputPin.value = "";
   transferToElm.value = "";
   transferAmountElm.value = "";
+  closeUserInput.value = "";
+  closeAccountInput.value = "";
 }
 
 logBtn.addEventListener("click", (event) => {
@@ -58,11 +73,21 @@ logBtn.addEventListener("click", (event) => {
 
 transferBtn.addEventListener("click", (event) => {
   event.preventDefault();
+  if (!loggedUser) return;
   const fromAccount = loggedUser.account;
   const toPinNumber = Number(transferToElm.value); // check with a regex (pinNumber)
+  if (toPinNumber === loggedUser.pin) {
+    console.log("Cannot transfer money to the same account");
+    return;
+  }
   const transferAmount = Number(transferAmountElm.value); // check with regex
   if (loggedUser.balance < transferAmount) {
     console.log("Insufficient amount in account");
+    return;
+  }
+
+  if (transferAmount < 0) {
+    console.log("Negative value not allowed");
     return;
   }
   if (transferVal(fromAccount, toPinNumber, transferAmount)) {
@@ -70,4 +95,17 @@ transferBtn.addEventListener("click", (event) => {
     updateUI(loggedUser);
     console.log("Transfer concluded");
   } else console.log("Invalid transfer (invalid account?)");
+});
+
+closeBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const { username, account } = loggedUser;
+  const closeUser = closeUserInput.value;
+  const closeAccount = Number(closeAccountInput.value);
+  if (closeUser !== username || closeAccount !== account.pin) {
+    console.log("Logged in user can only close its own account.");
+    return;
+  }
+  loggedUser = null;
+  updateUI(loggedUser);
 });

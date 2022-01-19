@@ -67,9 +67,19 @@
           <div class="operations__op op--close">
             <h3>Close Account</h3>
             <form class="operations__form form--close">
-              <input type="text" id="close-user" />
-              <input type="text" id="close-account" />
-              <button>Go</button>
+              <input
+                type="text"
+                id="close-user"
+                class="close--user"
+                placeholder="username"
+              />
+              <input
+                type="text"
+                id="close-account"
+                class="close--account"
+                placeholder="pin"
+              />
+              <button class="close__button">Go</button>
               <label for="close-user"> Confirm user</label>
               <label for="close-account">Confirm account</label>
             </form>
