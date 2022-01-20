@@ -40,6 +40,8 @@ const transferBtn = document.querySelector(".transfer__button");
 const closeBtn = document.querySelector(".close__button");
 const closeUserInput = document.querySelector(".close--user");
 const closeAccountInput = document.querySelector(".close--account");
+const loanBtn = document.querySelector(".loan__button");
+const loanInput = document.querySelector(".loan--amount");
 
 function updateUI(currentUser) {
   if (!currentUser) {
@@ -61,6 +63,7 @@ function updateUI(currentUser) {
   transferAmountElm.value = "";
   closeUserInput.value = "";
   closeAccountInput.value = "";
+  loanInput.value = "";
 }
 
 logBtn.addEventListener("click", (event) => {
@@ -95,6 +98,24 @@ transferBtn.addEventListener("click", (event) => {
     updateUI(loggedUser);
     console.log("Transfer concluded");
   } else console.log("Invalid transfer (invalid account?)");
+});
+
+loanBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const loan = Number(loanInput.value);
+  if (loan <= 0) return;
+  // find if there is any deposit 10%  greater than the requested loan
+  const { movements } = loggedUser.account;
+  const loanApproved = movements
+    .filter((mov) => mov > 0)
+    // loan * 0.1 + loan = loan * (0.1 + 1) = loan * 1.1
+    .some((dep) => dep >= loan * (10 / 100));
+  if (loanApproved) {
+    movements.push(loan);
+    updateUI(loggedUser);
+  } else {
+    console.log("Value not approved.");
+  }
 });
 
 closeBtn.addEventListener("click", (event) => {
