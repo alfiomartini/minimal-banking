@@ -29,6 +29,7 @@ let loggedUser = null;
 const inputName = document.querySelector(".header__username");
 const inputPin = document.querySelector(".header__pin");
 const logBtn = document.querySelector(".header__btn");
+const logoutBtn = document.querySelector(".logout__btn");
 const movementsElm = document.querySelector(".movements");
 const wellcomeElm = document.querySelector(".header__wellcome");
 const balanceDateElm = document.querySelector(".balance__current__date");
@@ -45,6 +46,8 @@ const loanBtn = document.querySelector(".loan__button");
 const loanInput = document.querySelector(".loan--amount");
 
 function updateUI(currentUser) {
+  logBtn.classList.add("hidden");
+  logoutBtn.classList.remove("hidden");
   if (!currentUser) {
     wellcomeElm.textContent = "Log in to get started";
     mainElm.classList.add("hidden");
@@ -94,7 +97,7 @@ transferBtn.addEventListener("click", (event) => {
     console.log("Negative value not allowed");
     return;
   }
-  if (transferVal(fromAccount, toPinNumber, transferAmount)) {
+  if (transferVal(accounts, fromAccount, toPinNumber, transferAmount)) {
     loggedUser.balance = getBalance(loggedUser.account);
     updateUI(loggedUser);
     console.log("Transfer concluded");
@@ -129,9 +132,12 @@ closeBtn.addEventListener("click", (event) => {
     console.log("Logged in user can only close its own account.");
     return;
   }
-  console.log(accounts);
   accounts = accounts.filter((acc) => acc !== account);
-  console.log(accounts);
+  loggedUser = null;
+  updateUI(loggedUser);
+});
+
+logoutBtn.addEventListener("click", () => {
   loggedUser = null;
   updateUI(loggedUser);
 });

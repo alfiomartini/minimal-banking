@@ -1,7 +1,6 @@
 "use strict";
 
 //  functions
-// import { accounts } from "./script.js";
 
 export function computeUsername(account) {
   let { owner } = account;
@@ -13,7 +12,12 @@ export function computeUsername(account) {
   return username;
 }
 
-export function transferVal(fromAccount, toPinNumber, transferAmount) {
+export function transferVal(
+  accounts,
+  fromAccount,
+  toPinNumber,
+  transferAmount
+) {
   // console.log(fromAccount, toPinNumber, transferAmount);
   const toAccount = accounts.find((account) => account.pin === toPinNumber);
   if (!toAccount) return false; // have to signal error to user
