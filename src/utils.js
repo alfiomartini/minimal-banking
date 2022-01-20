@@ -1,7 +1,7 @@
 "use strict";
 
 //  functions
-import { accounts } from "./script.js";
+// import { accounts } from "./script.js";
 
 export function computeUsername(account) {
   let { owner } = account;
@@ -106,7 +106,7 @@ export function updateHello(account) {
   return hello;
 }
 
-export function logIn(inputName, inputPin) {
+export function logIn(accounts, inputName, inputPin) {
   inputPin = parseInt(inputPin);
   const account = accounts.find((account) => {
     return account.pin === inputPin;

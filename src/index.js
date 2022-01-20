@@ -4,7 +4,8 @@
 //  many importing modules
 // https://stackoverflow.com/questions/53617972/exported-variables-are-read-only
 
-import { accounts } from "./script.js";
+import { accounts as libAccounts } from "./script.js";
+let accounts = [...libAccounts];
 import {
   updateMovements,
   logIn,
@@ -70,7 +71,7 @@ logBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const userName = inputName.value;
   const userPin = inputPin.value;
-  loggedUser = logIn(userName, userPin);
+  loggedUser = logIn(accounts, userName, userPin);
   if (loggedUser) updateUI(loggedUser);
 });
 
@@ -112,6 +113,7 @@ loanBtn.addEventListener("click", (event) => {
     .some((dep) => dep >= loan * (10 / 100));
   if (loanApproved) {
     movements.push(loan);
+    loggedUser.balance = getBalance(loggedUser.account);
     updateUI(loggedUser);
   } else {
     console.log("Value not approved.");
@@ -127,6 +129,9 @@ closeBtn.addEventListener("click", (event) => {
     console.log("Logged in user can only close its own account.");
     return;
   }
+  console.log(accounts);
+  accounts = accounts.filter((acc) => acc !== account);
+  console.log(accounts);
   loggedUser = null;
   updateUI(loggedUser);
 });
