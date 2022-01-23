@@ -26,17 +26,20 @@ export function transferVal(
   return true;
 }
 
-export function updateMovements(account) {
+export function updateMovements(account, sorted = false) {
   const { movements } = account;
   let strMov = "";
-  movements.forEach((mov) => {
+  const newMovements = sorted
+    ? movements.slice(0).sort((x, y) => x - y)
+    : movements;
+  newMovements.forEach((mov) => {
     const date = new Date().toLocaleDateString();
     const type = mov < 0 ? "withdrawal" : "deposit";
     if (mov < 0) mov = Math.abs(mov);
     const value = roundTo(mov, 2);
     const movement = `
     <span class="movements__type movements--${type}">${type}</span>
-    <span class="movements__date">${date}</span>
+    <span class="movements__date"></span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
@@ -60,14 +63,6 @@ export function roundTo(val, places) {
   return numText;
 }
 
-export function updateSummary(inMov, outMov, interest) {
-  return `
-  <div><span class="label">in</span>${roundTo(inMov, 2)}</div>
-  <div><span class="label">out</span>${roundTo(outMov, 2)}</div>
-  <div><span class="label">interest</span>${roundTo(interest, 2)}</div>
-  <button class="sort">sort</button>
-  `;
-}
 export function getSummaryAccount(account) {
   let inMov = 0;
   let outMov = 0;

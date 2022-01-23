@@ -5,7 +5,7 @@
 }
 
 body {
-  padding: 30px 50px;
+  padding: 30px 50px 30px 50px;
   height: 100vh;
 }
 
@@ -83,7 +83,7 @@ body {
   margin: 20px auto;
   display: flex;
   justify-content: space-between;
-  height: 70vh;
+  height: 65vh;
 }
 
 .transactions .left-container {
@@ -91,7 +91,7 @@ body {
 }
 
 .movements {
-  height: 70vh;
+  height: 65vh;
   border: 1px solid black;
   padding: 20px 15px;
   border-radius: 10px;
