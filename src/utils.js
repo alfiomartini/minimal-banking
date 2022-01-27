@@ -50,17 +50,20 @@ export function updateMovements(account, sorted = false) {
 }
 
 export function roundTo(val, places) {
-  // let mult = 10 ** places;
-  // let num = Math.ceil(val * mult) / mult;
   let numText = String(val);
   let index = numText.indexOf(".");
-  if (index === -1) numText += "." + "0".repeat(places);
-  else {
-    let fraction = numText.slice(index + 1);
-    if (fraction.length < places)
-      numText += "0".repeat(places - fraction.length);
+  if (index === -1) {
+    numText += "." + "0".repeat(places);
+    return numText;
+  } // else
+  const integral = numText.slice(0, index);
+  let fraction = numText.slice(index + 1);
+  if (fraction.length >= places) {
+    fraction = fraction.slice(0, places);
+    return integral + "." + fraction;
+  } else {
+    return integral + "." + fraction + "0".repeat(places - fraction.length);
   }
-  return numText;
 }
 
 export function getSummaryAccount(account) {
