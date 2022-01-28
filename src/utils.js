@@ -27,19 +27,21 @@ export function transferVal(
 }
 
 export function updateMovements(account, sorted = false) {
-  const { movements } = account;
+  const { movements, movementsDates } = account;
   let strMov = "";
   const newMovements = sorted
     ? movements.slice(0).sort((x, y) => x - y)
     : movements;
-  newMovements.forEach((mov) => {
+  newMovements.forEach((mov, index) => {
     const date = new Date().toLocaleDateString();
     const type = mov < 0 ? "withdrawal" : "deposit";
     if (mov < 0) mov = Math.abs(mov);
     const value = roundTo(mov, 2);
     const movement = `
     <span class="movements__type movements--${type}">${type}</span>
-    <span class="movements__date"></span>
+    <span class="movements__date">${new Date(
+      movementsDates[index]
+    ).toLocaleDateString()}</span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;

@@ -29,6 +29,7 @@ body {
   height: 30px;
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
 }
 
 .header__form input {

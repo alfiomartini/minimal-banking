@@ -25,6 +25,8 @@ const inputName = document.querySelector(".header__username");
 const inputPin = document.querySelector(".header__pin");
 const logBtn = document.querySelector(".header__btn");
 const logoutBtn = document.querySelector(".logout__btn");
+const userNameLogin = document.querySelector(".header__username");
+const pinNumberLogin = document.querySelector(".header__pin");
 const movementsElm = document.querySelector(".movements");
 const wellcomeElm = document.querySelector(".header__wellcome");
 const balanceDateElm = document.querySelector(".balance__current__date");
@@ -46,6 +48,8 @@ const valueInterest = document.querySelector(".value__interest");
 
 function updateUI(currentUser) {
   logBtn.classList.add("hidden");
+  userNameLogin.classList.add("hidden");
+  pinNumberLogin.classList.add("hidden");
   logoutBtn.classList.remove("hidden");
   if (!currentUser) {
     wellcomeElm.textContent = "Log in to get started";
