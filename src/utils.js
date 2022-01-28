@@ -41,7 +41,7 @@ export function updateMovements(account, sorted = false) {
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${new Date(
       movementsDates[index]
-    ).toLocaleDateString()}</span>
+    ).toLocaleDateString("pt-br")}</span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
@@ -92,7 +92,7 @@ export function getBalance(account) {
 
 export function updateBalanceDate() {
   const date = new Date();
-  const localDate = date.toLocaleDateString();
+  const localDate = date.toLocaleDateString("pt-br");
   const hours = `${date.getHours()}:${date.getMinutes()}`;
   return `As of ${localDate}, ${hours}`;
 }
