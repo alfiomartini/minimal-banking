@@ -33,15 +33,19 @@ export function updateMovements(account, sorted = false) {
     ? movements.slice(0).sort((x, y) => x - y)
     : movements;
   newMovements.forEach((mov, index) => {
-    const date = new Date().toLocaleDateString();
+    // const date = new Date().toLocaleDateString();
+    const date = new Date(movementsDates[index]);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const min = date.getMinutes();
     const type = mov < 0 ? "withdrawal" : "deposit";
     if (mov < 0) mov = Math.abs(mov);
     const value = roundTo(mov, 2);
     const movement = `
     <span class="movements__type movements--${type}">${type}</span>
-    <span class="movements__date">${new Date(
-      movementsDates[index]
-    ).toLocaleDateString("pt-br")}</span>
+    <span class="movements__date">${day}/${month}/${year}, ${hours}:${min}</span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
