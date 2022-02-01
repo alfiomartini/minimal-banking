@@ -26,31 +26,31 @@ export function transferVal(
   return true;
 }
 
-export function updateMovements(account, sorted = false) {
-  const { movements, movementsDates } = account;
+export function updateMovements(user, sorted = false) {
+  const { movementsWithDates } = user;
   let strMov = "";
-  const newMovements = sorted
-    ? movements.slice(0).sort((x, y) => x - y)
-    : movements;
-  newMovements.forEach((mov, index) => {
+  const newMovementsWithDates = sorted
+    ? movementsWithDates.slice(0).sort((x, y) => x.movement - y.movement)
+    : movementsWithDates;
+  newMovementsWithDates.forEach(({ movement, movDate }, index) => {
     // const date = new Date().toLocaleDateString();
-    const date = new Date(movementsDates[index]);
+    const date = new Date(movDate);
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     const hours = date.getHours();
     const min = date.getMinutes();
-    const type = mov < 0 ? "withdrawal" : "deposit";
-    if (mov < 0) mov = Math.abs(mov);
-    const value = roundTo(mov, 2);
-    const movement = `
+    const type = movement < 0 ? "withdrawal" : "deposit";
+    if (movement < 0) movement = Math.abs(movement);
+    const value = roundTo(movement, 2);
+    const movementStr = `
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${day}/${month}/${year}, ${hours}:${min}</span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
     // most recent first
-    strMov = movement + strMov;
+    strMov = movementStr + strMov;
   });
   return strMov;
 }
@@ -123,13 +123,19 @@ export function logIn(accounts, inputName, inputPin) {
     console.log("user not found", account);
     return null;
   }
-  let { pin } = account;
+  let { pin, movements, movementsDates } = account;
+  const movementsWithDates = movements.reduce((acc, curr, index) => {
+    const obj = { movement: curr, movDate: movementsDates[index] };
+    return [...acc, obj];
+  }, []);
+  // console.log("movement with dates", movementsWithDates);
   const username = computeUsername(account);
   // the first conjunct has been satisfied above
   // so it is trivially true
   if (inputPin === pin && username === inputName) {
     console.log("authentication successful");
     return {
+      movementsWithDates,
       username,
       account,
       balance: getBalance(account),

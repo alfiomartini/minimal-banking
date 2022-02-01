@@ -58,7 +58,7 @@ function updateUI(currentUser) {
   }
   const { balance, account } = currentUser;
   mainElm.classList.remove("hidden");
-  movementsElm.innerHTML = updateMovements(account);
+  movementsElm.innerHTML = updateMovements(currentUser);
   wellcomeElm.textContent = updateHello(account);
   balanceDateElm.textContent = updateBalanceDate();
   const { inMov, outMov, interest } = getSummaryAccount(account);
@@ -80,6 +80,7 @@ logBtn.addEventListener("click", (event) => {
   const userName = inputName.value;
   const userPin = inputPin.value;
   loggedUser = logIn(accounts, userName, userPin);
+  console.log("loggedUser", loggedUser);
   if (loggedUser) updateUI(loggedUser);
 });
 
@@ -149,6 +150,6 @@ logoutBtn.addEventListener("click", () => {
 
 let sortedMovements = true;
 sortBtn.addEventListener("click", () => {
-  movementsElm.innerHTML = updateMovements(loggedUser.account, sortedMovements);
+  movementsElm.innerHTML = updateMovements(loggedUser, sortedMovements);
   sortedMovements = !sortedMovements;
 });
