@@ -2,6 +2,20 @@
 
 //  functions
 
+export function keyIsPressed(target) {
+  return new Promise((resolve) => {
+    document.body.addEventListener(
+      "keyup",
+      ({ key }) => {
+        if (key.toUpperCase() === target.toUpperCase()) {
+          resolve();
+        }
+      },
+      { once: true }
+    );
+  });
+}
+
 export function computeUsername(account) {
   let { owner } = account;
   const username = owner
@@ -18,34 +32,42 @@ export function transferVal(
   toPinNumber,
   transferAmount
 ) {
-  // console.log(fromAccount, toPinNumber, transferAmount);
   const toAccount = accounts.find((account) => account.pin === toPinNumber);
   if (!toAccount) return false; // have to signal error to user
   fromAccount.movements.push(-transferAmount); // ensure negative movement;
+  fromAccount.movementsDates.push(new Date().toISOString());
   toAccount.movements.push(transferAmount);
+  toAccount.movementsDates.push(new Date().toISOString());
+  // console.log("transfer", accounts);
   return true;
 }
 
-export function updateMovements(user, sorted = false) {
-  const { movementsWithDates } = user;
+function getNewDate(dateStr) {
+  const date = new Date(dateStr);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const min = date.getMinutes();
+  return `${day}/${month}/${year}, ${hours}:${min}`;
+}
+
+export function updateMovements(account, sorted = false) {
+  const { movements, movementsDates } = account;
+  const movementsWithDates = getMovementsAndDates(movements, movementsDates);
   let strMov = "";
   const newMovementsWithDates = sorted
     ? movementsWithDates.slice(0).sort((x, y) => x.movement - y.movement)
     : movementsWithDates;
   newMovementsWithDates.forEach(({ movement, movDate }, index) => {
-    // const date = new Date().toLocaleDateString();
-    const date = new Date(movDate);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const min = date.getMinutes();
+    // const dateStr = new Date().toLocaleDateString();
+    const dateStr = getNewDate(movDate);
     const type = movement < 0 ? "withdrawal" : "deposit";
     if (movement < 0) movement = Math.abs(movement);
     const value = roundTo(movement, 2);
     const movementStr = `
     <span class="movements__type movements--${type}">${type}</span>
-    <span class="movements__date">${day}/${month}/${year}, ${hours}:${min}</span>
+    <span class="movements__date">${dateStr}</span>
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
@@ -114,6 +136,14 @@ export function updateHello(account) {
   return hello;
 }
 
+function getMovementsAndDates(movements, movementsDates) {
+  const movementsWithDates = movements.reduce((acc, curr, index) => {
+    const obj = { movement: curr, movDate: movementsDates[index] };
+    return [...acc, obj];
+  }, []);
+  return movementsWithDates;
+}
+
 export function logIn(accounts, inputName, inputPin) {
   inputPin = parseInt(inputPin);
   const account = accounts.find((account) => {
@@ -124,10 +154,7 @@ export function logIn(accounts, inputName, inputPin) {
     return null;
   }
   let { pin, movements, movementsDates } = account;
-  const movementsWithDates = movements.reduce((acc, curr, index) => {
-    const obj = { movement: curr, movDate: movementsDates[index] };
-    return [...acc, obj];
-  }, []);
+  const movementsWithDates = getMovementsAndDates(movements, movementsDates);
   // console.log("movement with dates", movementsWithDates);
   const username = computeUsername(account);
   // the first conjunct has been satisfied above
@@ -135,7 +162,6 @@ export function logIn(accounts, inputName, inputPin) {
   if (inputPin === pin && username === inputName) {
     console.log("authentication successful");
     return {
-      movementsWithDates,
       username,
       account,
       balance: getBalance(account),

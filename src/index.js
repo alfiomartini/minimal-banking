@@ -6,6 +6,8 @@
 
 import { accounts as libAccounts } from "./script.js";
 let accounts = [...libAccounts];
+// for debugging purposes
+window.accounts = accounts;
 import {
   updateMovements,
   logIn,
@@ -13,6 +15,7 @@ import {
   transferVal,
   computeUsername,
   getBalance,
+  keyIsPressed,
 } from "./utils.js";
 import { updateBalanceDate, getSummaryAccount, roundTo } from "./utils.js";
 
@@ -22,7 +25,9 @@ let loggedUser = null;
 // Dom Elements
 
 const inputName = document.querySelector(".header__username");
+inputName.value = "";
 const inputPin = document.querySelector(".header__pin");
+inputPin.value = "";
 const logBtn = document.querySelector(".header__btn");
 const logoutBtn = document.querySelector(".logout__btn");
 const userNameLogin = document.querySelector(".header__username");
@@ -47,18 +52,25 @@ const valueOut = document.querySelector(".value__out");
 const valueInterest = document.querySelector(".value__interest");
 
 function updateUI(currentUser) {
-  logBtn.classList.add("hidden");
-  userNameLogin.classList.add("hidden");
-  pinNumberLogin.classList.add("hidden");
-  logoutBtn.classList.remove("hidden");
+  // console.log("accounts, user", accounts, currentUser);
+  inputName.value = "";
+  inputPin.value = "";
   if (!currentUser) {
     wellcomeElm.textContent = "Log in to get started";
+    userNameLogin.classList.remove("hidden");
+    pinNumberLogin.classList.remove("hidden");
+    logBtn.classList.remove("hidden");
+    logoutBtn.classList.add("hidden");
     mainElm.classList.add("hidden");
     return;
   }
   const { balance, account } = currentUser;
+  logBtn.classList.add("hidden");
+  userNameLogin.classList.add("hidden");
+  pinNumberLogin.classList.add("hidden");
+  logoutBtn.classList.remove("hidden");
   mainElm.classList.remove("hidden");
-  movementsElm.innerHTML = updateMovements(currentUser);
+  movementsElm.innerHTML = updateMovements(account);
   wellcomeElm.textContent = updateHello(account);
   balanceDateElm.textContent = updateBalanceDate();
   const { inMov, outMov, interest } = getSummaryAccount(account);
@@ -66,8 +78,6 @@ function updateUI(currentUser) {
   valueIn.textContent = roundTo(inMov, 2);
   valueOut.textContent = roundTo(outMov, 2);
   valueInterest.textContent = roundTo(interest, 2);
-  inputName.value = "";
-  inputPin.value = "";
   transferToElm.value = "";
   transferAmountElm.value = "";
   closeUserInput.value = "";
@@ -80,7 +90,6 @@ logBtn.addEventListener("click", (event) => {
   const userName = inputName.value;
   const userPin = inputPin.value;
   loggedUser = logIn(accounts, userName, userPin);
-  console.log("loggedUser", loggedUser);
   if (loggedUser) updateUI(loggedUser);
 });
 
@@ -114,14 +123,14 @@ loanBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const loan = Number(loanInput.value);
   if (loan <= 0) return;
-  // find if there is any deposit 10%  greater than the requested loan
-  const { movements } = loggedUser.account;
+  // find if there is any deposit that is greater that 10% of the required loan
+  const { movements, movementsDates } = loggedUser.account;
   const loanApproved = movements
     .filter((mov) => mov > 0)
-    // loan * 0.1 + loan = loan * (0.1 + 1) = loan * 1.1
     .some((dep) => dep >= loan * (10 / 100));
   if (loanApproved) {
     movements.push(loan);
+    movementsDates.push(new Date().toISOString());
     loggedUser.balance = getBalance(loggedUser.account);
     updateUI(loggedUser);
   } else {
@@ -143,13 +152,14 @@ closeBtn.addEventListener("click", (event) => {
   updateUI(loggedUser);
 });
 
-logoutBtn.addEventListener("click", () => {
+logoutBtn.addEventListener("click", (event) => {
+  event.preventDefault();
   loggedUser = null;
   updateUI(loggedUser);
 });
 
 let sortedMovements = true;
 sortBtn.addEventListener("click", () => {
-  movementsElm.innerHTML = updateMovements(loggedUser, sortedMovements);
+  movementsElm.innerHTML = updateMovements(loggedUser.account, sortedMovements);
   sortedMovements = !sortedMovements;
 });
