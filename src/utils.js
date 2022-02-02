@@ -26,6 +26,14 @@ export function computeUsername(account) {
   return username;
 }
 
+function getMovementsAndDates(movements, movementsDates) {
+  const movementsWithDates = movements.reduce((acc, curr, index) => {
+    const obj = { movement: curr, movDate: movementsDates[index] };
+    return [...acc, obj];
+  }, []);
+  return movementsWithDates;
+}
+
 export function transferVal(
   accounts,
   fromAccount,
@@ -38,7 +46,6 @@ export function transferVal(
   fromAccount.movementsDates.push(new Date().toISOString());
   toAccount.movements.push(transferAmount);
   toAccount.movementsDates.push(new Date().toISOString());
-  // console.log("transfer", accounts);
   return true;
 }
 
@@ -57,7 +64,9 @@ export function updateMovements(account, sorted = false) {
   const movementsWithDates = getMovementsAndDates(movements, movementsDates);
   let strMov = "";
   const newMovementsWithDates = sorted
-    ? movementsWithDates.slice(0).sort((x, y) => x.movement - y.movement)
+    ? movementsWithDates
+        .slice(0)
+        .sort((x, y) => Date.parse(y.movDate) - Date.parse(x.movDate))
     : movementsWithDates;
   newMovementsWithDates.forEach(({ movement, movDate }, index) => {
     // const dateStr = new Date().toLocaleDateString();
@@ -134,14 +143,6 @@ export function updateHello(account) {
   }
   let hello = `Good ${timeOfDay}, ${name}`;
   return hello;
-}
-
-function getMovementsAndDates(movements, movementsDates) {
-  const movementsWithDates = movements.reduce((acc, curr, index) => {
-    const obj = { movement: curr, movDate: movementsDates[index] };
-    return [...acc, obj];
-  }, []);
-  return movementsWithDates;
 }
 
 export function logIn(accounts, inputName, inputPin) {
