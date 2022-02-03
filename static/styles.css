@@ -182,8 +182,9 @@ body {
 }
 
 .operations__op button {
-  width: 60px;
+  width: 70px;
   padding: 5px 10px;
+  text-align: center;
 }
 
 /* summary  */

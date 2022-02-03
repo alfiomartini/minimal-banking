@@ -16,6 +16,20 @@ export function keyIsPressed(target) {
   });
 }
 
+function getDate(dateStr) {
+  const date = new Date(dateStr);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const min = date.getMinutes();
+  return `${day}/${month}/${year}`;
+}
+
+function getInternationalDate(date, options = {}, locale = "default") {
+  return new Intl.DateTimeFormat(locale, options).format(date);
+}
+
 export function computeUsername(account) {
   let { owner } = account;
   const username = owner
@@ -49,16 +63,6 @@ export function transferVal(
   return true;
 }
 
-function getNewDate(dateStr) {
-  const date = new Date(dateStr);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const min = date.getMinutes();
-  return `${day}/${month}/${year}, ${hours}:${min}`;
-}
-
 export function updateMovements(account, sorted = false) {
   const { movements, movementsDates } = account;
   const movementsWithDates = getMovementsAndDates(movements, movementsDates);
@@ -66,11 +70,19 @@ export function updateMovements(account, sorted = false) {
   const newMovementsWithDates = sorted
     ? movementsWithDates
         .slice(0)
+        // order from newer to older
         .sort((x, y) => Date.parse(y.movDate) - Date.parse(x.movDate))
     : movementsWithDates;
   newMovementsWithDates.forEach(({ movement, movDate }, index) => {
     // const dateStr = new Date().toLocaleDateString();
-    const dateStr = getNewDate(movDate);
+    // const dateStr = getDate(movDate);
+    const options = {
+      year: "numeric",
+      day: "2-digit",
+      month: "2-digit",
+    };
+    const locale = navigator.language;
+    const dateStr = getInternationalDate(new Date(movDate), options, locale);
     const type = movement < 0 ? "withdrawal" : "deposit";
     if (movement < 0) movement = Math.abs(movement);
     const value = roundTo(movement, 2);
@@ -80,7 +92,8 @@ export function updateMovements(account, sorted = false) {
     <span class="movements__value">${value} US$</span>
     <span class="line"></span>
     `;
-    // most recent first
+    // lest recent first
+    // then the newest become the oldest (if sorted = true)
     strMov = movementStr + strMov;
   });
   return strMov;
@@ -127,9 +140,22 @@ export function getBalance(account) {
 
 export function updateBalanceDate() {
   const date = new Date();
-  const localDate = date.toLocaleDateString("pt-br");
-  const hours = `${date.getHours()}:${date.getMinutes()}`;
-  return `As of ${localDate}, ${hours}`;
+  // https://www.w3schools.com/jsref/jsref_tolocalestring.asp
+  // const localDate = date.toLocaleDateString("pt-BR");
+  // const hours = date.getHours().toString().padStart(2, "0");
+  // const minutes = date.getMinutes().toString().padStart(2, "0");
+  const options = {
+    year: "numeric",
+    day: "2-digit",
+    month: "long",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  };
+
+  const locale = navigator.language;
+  const dateStr = getInternationalDate(new Date(), options, locale);
+  return `As of ${dateStr}`;
 }
 
 export function updateHello(account) {
