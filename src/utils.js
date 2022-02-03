@@ -30,6 +30,14 @@ function getInternationalDate(date, options = {}, locale = "default") {
   return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
+export function getInternationalNumber(
+  number,
+  options = { style: "currency", currency: "USD" },
+  locale = "en-US"
+) {
+  return new Intl.NumberFormat(locale, options).format(number);
+}
+
 export function computeUsername(account) {
   let { owner } = account;
   const username = owner
@@ -85,11 +93,11 @@ export function updateMovements(account, sorted = false) {
     const dateStr = getInternationalDate(new Date(movDate), options, locale);
     const type = movement < 0 ? "withdrawal" : "deposit";
     if (movement < 0) movement = Math.abs(movement);
-    const value = roundTo(movement, 2);
+    const value = getInternationalNumber(movement);
     const movementStr = `
     <span class="movements__type movements--${type}">${type}</span>
     <span class="movements__date">${dateStr}</span>
-    <span class="movements__value">${value} US$</span>
+    <span class="movements__value">${value}</span>
     <span class="line"></span>
     `;
     // lest recent first

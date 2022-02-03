@@ -83,6 +83,7 @@ body {
 .transactions {
   margin: 20px auto;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   height: 65vh;
 }
@@ -143,6 +144,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  height: 65vh;
 }
 
 .operations__op {
@@ -189,21 +191,22 @@ body {
 
 /* summary  */
 
-.summary {
+footer .summary {
   margin-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  width: 50%;
+  /* align-items: center; */
 }
 
-.summary div {
-  font-size: 20px;
+.summary > div {
+  font-size: 18px;
 }
 
 .summary .label {
   font-variant: small-caps;
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 10px;
   color: brown;
 }
@@ -211,4 +214,16 @@ body {
 .summary button {
   width: 60px;
   padding: 5px 10px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.timer {
+  margin-top: 20px;
+  font-size: 18px;
+  font-variant: small-caps;
 }

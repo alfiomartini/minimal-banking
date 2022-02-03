@@ -17,7 +17,12 @@ import {
   getBalance,
   keyIsPressed,
 } from "./utils.js";
-import { updateBalanceDate, getSummaryAccount, roundTo } from "./utils.js";
+import {
+  updateBalanceDate,
+  getSummaryAccount,
+  roundTo,
+  getInternationalNumber,
+} from "./utils.js";
 
 // nobody is logged in
 let loggedUser = null;
@@ -74,10 +79,10 @@ function updateUI(currentUser) {
   wellcomeElm.textContent = updateHello(account);
   balanceDateElm.textContent = updateBalanceDate();
   const { inMov, outMov, interest } = getSummaryAccount(account);
-  balanceVal.textContent = roundTo(balance, 2) + "US$";
-  valueIn.textContent = roundTo(inMov, 2);
-  valueOut.textContent = roundTo(outMov, 2);
-  valueInterest.textContent = roundTo(interest, 2);
+  balanceVal.textContent = getInternationalNumber(balance);
+  valueIn.textContent = getInternationalNumber(inMov);
+  valueOut.textContent = getInternationalNumber(outMov);
+  valueInterest.textContent = getInternationalNumber(interest);
   transferToElm.value = "";
   transferAmountElm.value = "";
   closeUserInput.value = "";
