@@ -5,8 +5,8 @@
 }
 
 body {
-  padding: 30px 50px 30px 50px;
-  height: 100vh;
+  padding: 30px;
+  /* height: 120vh; */
 }
 
 /* header styles */
@@ -45,7 +45,7 @@ body {
 
 .main {
   width: 100%;
-  margin: 20px auto;
+  margin: 40px auto;
 }
 
 .hidden {
@@ -86,7 +86,6 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 75vh;
 }
 
 .transactions .left-container {
@@ -94,7 +93,7 @@ body {
 }
 
 .movements {
-  height: 75vh;
+  height: 500px;
   border: 1px solid black;
   padding: 20px 15px;
   border-radius: 10px;
@@ -145,7 +144,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 75vh;
+  height: 500px;
 }
 
 .operations__op {
