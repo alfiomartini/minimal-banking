@@ -55,6 +55,30 @@ const sortBtn = document.querySelector(".sort__btn");
 const valueIn = document.querySelector(".value__in");
 const valueOut = document.querySelector(".value__out");
 const valueInterest = document.querySelector(".value__interest");
+const appTimer = document.querySelector(".timer__val");
+
+function logoutTimer() {
+  // define time in 5min
+  let time = 5 * 60 * 1000;
+  // call the timer every second;
+  const options = {
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  };
+  const timer = setInterval(() => {
+    const dateStr = new Intl.DateTimeFormat("en-US", options).format(time);
+    if (time === 0) {
+      clearInterval(timer);
+      // logout
+      let logoutEv = new Event("click");
+      logoutBtn.dispatchEvent(logoutEv);
+    }
+    appTimer.textContent = dateStr;
+    // remove 1s from time
+    time = time - 1000;
+  }, 1000);
+}
 
 function updateUI(currentUser) {
   // console.log("accounts, user", accounts, currentUser);
@@ -95,7 +119,10 @@ logBtn.addEventListener("click", (event) => {
   const userName = inputName.value;
   const userPin = inputPin.value;
   loggedUser = logIn(accounts, userName, userPin);
-  if (loggedUser) updateUI(loggedUser);
+  if (loggedUser) {
+    updateUI(loggedUser);
+    logoutTimer();
+  }
 });
 
 transferBtn.addEventListener("click", (event) => {
@@ -134,10 +161,13 @@ loanBtn.addEventListener("click", (event) => {
     .filter((mov) => mov > 0)
     .some((dep) => dep >= loan * (10 / 100));
   if (loanApproved) {
-    movements.push(loan);
-    movementsDates.push(new Date().toISOString());
-    loggedUser.balance = getBalance(loggedUser.account);
-    updateUI(loggedUser);
+    setTimeout(() => {
+      movements.push(loan);
+      movementsDates.push(new Date().toISOString());
+      loggedUser.balance = getBalance(loggedUser.account);
+      updateUI(loggedUser);
+      console.log("Loan approved");
+    }, 3000);
   } else {
     console.log("Value not approved.");
   }
