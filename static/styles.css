@@ -6,7 +6,8 @@
 
 body {
   padding: 30px;
-  /* height: 120vh; */
+  background-color: #400000;
+  color: whitesmoke;
 }
 
 /* header styles */
@@ -21,8 +22,10 @@ body {
   font-size: 20px;
 }
 
+/* https://stackoverflow.com/questions/7415872/change-color-of-png-image-via-css */
 .header__logo img {
   width: 70px;
+  filter: invert(90%);
 }
 
 .header__form {
@@ -37,8 +40,24 @@ body {
   text-align: center;
 }
 
-.header__form button {
-  width: 60px;
+button {
+  width: 70px;
+  height: 25px;
+  font-variant: small-caps;
+  background-color: whitesmoke;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: #400000;
+  color: whitesmoke;
+  border: 1px solid white;
 }
 
 /* main styles */
@@ -93,6 +112,8 @@ body {
 }
 
 .movements {
+  background-color: whitesmoke;
+  color: black;
   height: 500px;
   border: 1px solid black;
   padding: 20px 15px;
@@ -185,6 +206,21 @@ body {
   text-align: center;
 }
 
+.op--transfer {
+  background-color: lightsteelblue;
+  color: black;
+}
+
+.op--loan {
+  background-color: wheat;
+  color: black;
+}
+
+.op--close {
+  background-color: olivedrab;
+  color: black;
+}
+
 /* timer & summary  */
 
 .summary__timer {
@@ -209,7 +245,7 @@ body {
   font-variant: small-caps;
   font-size: 18px;
   margin-right: 10px;
-  color: brown;
+  color: lightgreen;
 }
 
 .summary button {
