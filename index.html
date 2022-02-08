@@ -23,70 +23,14 @@
       </form>
     </section>
     <section class="main hidden">
-      <div class="balance">
+      <article class="balance">
         <div class="balance__current">
           <span class="header"> Current Balance</span>
           <span class="balance__current__date"> As of 06/01/2022, 9:13</span>
         </div>
         <div class="balance__value">$ 26000,00</div>
-      </div>
-      <div class="transactions">
-        <div class="left-container">
-          <div class="movements"></div>
-        </div>
-        <div class="operations">
-          <div class="operations__op op--transfer">
-            <h3>Transfer Money</h3>
-            <form class="operations__form form--transfer">
-              <input
-                type="text"
-                id="transfer-to"
-                class="transfer__to"
-                placeholder="pin"
-              />
-              <input
-                type="number"
-                id="transfer-amount"
-                class="transfer__amount"
-                min="0"
-                step="0.01"
-              />
-              <button class="transfer__button">transfer</button>
-              <label for="transfer-to"> Transfer to</label>
-              <label for="transfer-amount">Amount</label>
-            </form>
-          </div>
-          <div class="operations__op op--loan">
-            <h3>Request Loan</h3>
-            <form class="operations__form form--loan">
-              <input type="number" id="loan-amount" class="loan--amount" />
-              <button class="loan__button">request</button>
-              <label for="loan-amount">Amount</label>
-            </form>
-          </div>
-          <div class="operations__op op--close">
-            <h3>Close Account</h3>
-            <form class="operations__form form--close">
-              <input
-                type="text"
-                id="close-user"
-                class="close--user"
-                placeholder="username"
-              />
-              <input
-                type="text"
-                id="close-account"
-                class="close--account"
-                placeholder="pin"
-              />
-              <button class="close__button">close</button>
-              <label for="close-user"> Confirm user</label>
-              <label for="close-account">Confirm account</label>
-            </form>
-          </div>
-        </div>
-      </div>
-      <footer class="footer">
+      </article>
+      <article class="summary__timer">
         <div class="summary">
           <div>
             <span class="label">in</span>
@@ -105,7 +49,67 @@
         <div class="timer">
           you will be logged out in <span class="timer__val">00:00</span>
         </div>
-      </footer>
+      </article>
+      <article class="transactions">
+        <div class="left-container">
+          <div class="movements"></div>
+        </div>
+        <div class="operations">
+          <div class="operations__op op--transfer">
+            <div class="operations__op__header">
+              <h3>Transfer Money</h3>
+              <button class="transfer__button">transfer</button>
+            </div>
+            <form class="operations__form form--transfer">
+              <input
+                type="text"
+                id="transfer-to"
+                class="transfer__to"
+                placeholder="pin"
+              />
+              <input
+                type="number"
+                id="transfer-amount"
+                class="transfer__amount"
+                min="0"
+                step="0.01"
+              />
+              <label for="transfer-to"> Transfer to</label>
+              <label for="transfer-amount">Amount</label>
+            </form>
+          </div>
+          <div class="operations__op op--loan">
+            <h3>Request Loan</h3>
+            <form class="operations__form form--loan">
+              <input type="number" id="loan-amount" class="loan--amount" />
+              <button class="loan__button">request</button>
+              <label for="loan-amount">Amount</label>
+            </form>
+          </div>
+          <div class="operations__op op--close">
+            <div class="operations__op__header">
+              <h3>Close Account</h3>
+              <button class="close__button">close</button>
+            </div>
+            <form class="operations__form form--close">
+              <input
+                type="text"
+                id="close-user"
+                class="close--user"
+                placeholder="username"
+              />
+              <input
+                type="text"
+                id="close-account"
+                class="close--account"
+                placeholder="pin"
+              />
+              <label for="close-user"> Confirm user</label>
+              <label for="close-account">Confirm account</label>
+            </form>
+          </div>
+        </div>
+      </article>
     </section>
   </body>
 </html>
