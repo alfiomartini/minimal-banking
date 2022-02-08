@@ -155,7 +155,7 @@ export function updateBalanceDate() {
   const options = {
     year: "numeric",
     day: "2-digit",
-    month: "long",
+    month: "2-digit",
     hour: "numeric",
     minute: "numeric",
     hour12: false,

@@ -64,9 +64,10 @@ body {
 .balance__current {
   display: flex;
   flex-direction: column;
+  justify-content: start;
 }
 
-.balance__current .header {
+.balance__current__text {
   font-size: 24px;
 }
 
@@ -264,7 +265,16 @@ body {
 @media screen and (max-width: 550px) {
   .summary {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto auto;
     grid-auto-rows: 30px;
+    /* justify-items: stretch; */
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    height: 70px;
   }
 }
