@@ -1,0 +1,9 @@
+Blank Clients:
+
+- Alfio Martini
+  username: am
+  pin: 1111
+
+- Brenda Star
+  username:bs 
+  pin:2222

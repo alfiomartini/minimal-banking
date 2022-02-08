@@ -75,7 +75,7 @@ function logoutTimer() {
       logoutBtn.dispatchEvent(logoutEv);
     }
     appTimer.textContent = dateStr;
-    // remove 1s from time
+    // remove 1s from time every second
     time = time - 1000;
   }, 1000);
 }
