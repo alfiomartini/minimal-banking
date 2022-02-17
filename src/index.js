@@ -71,9 +71,8 @@ function updateTimerElm(time) {
 function logoutTimer() {
   // define time in 5min
   let time = 5 * 60 * 1000;
-  // let dateStr = new Intl.DateTimeFormat("en-US", options).format(time);
-  // appTimer.textContent = dateStr;
-  // time--;
+  // the callback will start to run 1s in the future
+  time = time - 1000;
   // call the timer every second;
   const timer = setInterval(() => {
     if (time === 0) {
