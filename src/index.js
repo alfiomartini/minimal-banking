@@ -56,25 +56,37 @@ const valueIn = document.querySelector(".value__in");
 const valueOut = document.querySelector(".value__out");
 const valueInterest = document.querySelector(".value__interest");
 const appTimer = document.querySelector(".timer__val");
+let loggedOut = null;
 
-function logoutTimer() {
-  // define time in 5min
-  let time = 5 * 60 * 1000;
-  // call the timer every second;
+function updateTimerElm(time) {
   const options = {
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
   };
+  const dateStr = new Intl.DateTimeFormat("en-US", options).format(time);
+  appTimer.textContent = dateStr;
+}
+
+function logoutTimer() {
+  // define time in 5min
+  let time = 5 * 60 * 1000;
+  // let dateStr = new Intl.DateTimeFormat("en-US", options).format(time);
+  // appTimer.textContent = dateStr;
+  // time--;
+  // call the timer every second;
   const timer = setInterval(() => {
-    const dateStr = new Intl.DateTimeFormat("en-US", options).format(time);
     if (time === 0) {
       clearInterval(timer);
       // logout
       let logoutEv = new Event("click");
       logoutBtn.dispatchEvent(logoutEv);
     }
-    appTimer.textContent = dateStr;
+    if (loggedOut) {
+      clearInterval(timer);
+      console.log("timer cleared by logout");
+    }
+    updateTimerElm(time);
     // remove 1s from time every second
     time = time - 1000;
   }, 1000);
@@ -118,8 +130,10 @@ logBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const userName = inputName.value;
   const userPin = inputPin.value;
+  updateTimerElm(0);
   loggedUser = logIn(accounts, userName, userPin);
   if (loggedUser) {
+    loggedOut = false;
     updateUI(loggedUser);
     logoutTimer();
   }
@@ -190,6 +204,7 @@ closeBtn.addEventListener("click", (event) => {
 logoutBtn.addEventListener("click", (event) => {
   event.preventDefault();
   loggedUser = null;
+  loggedOut = true;
   updateUI(loggedUser);
 });
 
