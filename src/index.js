@@ -57,6 +57,7 @@ const valueOut = document.querySelector(".value__out");
 const valueInterest = document.querySelector(".value__interest");
 const appTimer = document.querySelector(".timer__val");
 let loggedOut = null;
+let timer = null;
 
 function updateTimerElm(time) {
   const options = {
@@ -68,13 +69,12 @@ function updateTimerElm(time) {
   appTimer.textContent = dateStr;
 }
 
-function logoutTimer() {
-  // define time in 5min
-  let time = 5 * 60 * 1000;
+function logoutTimer(time = 5 * 60 * 1000) {
+  // default time is of  5min
   // the callback will start to run 1s in the future
   time = time - 1000;
   // call the timer every second;
-  const timer = setInterval(() => {
+  timer = setInterval(() => {
     if (time === 0) {
       clearInterval(timer);
       // logout
@@ -89,6 +89,7 @@ function logoutTimer() {
     // remove 1s from time every second
     time = time - 1000;
   }, 1000);
+  return timer;
 }
 
 function updateUI(currentUser) {
