@@ -162,6 +162,9 @@ transferBtn.addEventListener("click", (event) => {
     loggedUser.balance = getBalance(loggedUser.account);
     updateUI(loggedUser);
     console.log("Transfer concluded");
+    // restart a new timer
+    clearInterval(timer);
+    timer = logoutTimer();
   } else console.log("Invalid transfer (invalid account?)");
 });
 
